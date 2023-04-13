@@ -8,7 +8,7 @@ body{
   margin: 0;
   padding: 0;
 }
-.App{
+.app{
   background-color: #343541;
   display: flex;
   
@@ -22,7 +22,7 @@ body{
   justify-content: space-between;
 }
 button{
-  border: solid 0.5px rgba(255 ,255, 255, 0.5);
+border: solid 0.5px rgba(255 ,255, 255, 0.5);
 background-color: transparent;
 border-radius: 5px;
 padding: 10px;

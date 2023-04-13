@@ -4,18 +4,18 @@ const App = () => {
   const [value, setValue] = useState(null);
   const [message, setMessage] = useState(null);
   const [previousChats, setPreviousChats] = useState([]);
-  const [currentTitle, setCurrentTitle] = useState(null)
+  const [currentTitle, setCurrentTitle] = useState(null);
 
-  const createNewChat = () =>{
-    setMessage(null)
-    setValue("")
-    setCurrentTitle(null)
+  const createNewChat = () => {
+    setMessage(null);
+    setValue(" ");
+    setCurrentTitle(null);
   }
-  const handleClick =(uniqueTitles)=>{
-      setCurrentTitle(uniqueTitles)
-      setValue("")
-    setCurrentTitle(null)
-  }
+  const handleClick = (uniqueTitle) => {
+    setCurrentTitle(uniqueTitle);
+    setValue(" ");
+    setCurrentTitle(null);
+  };
   const getMessages = async () => {
     const options = {
       method: "POST",
@@ -32,7 +32,6 @@ const App = () => {
         options
       );
       const data = await response.json();
-      console.log(data);
       setMessage(data.choices[0].message);
     } catch (e) {
       console.error(e);
@@ -44,43 +43,54 @@ const App = () => {
       setCurrentTitle(value);
     }
     if (currentTitle && value && message) {
-      setPreviousChats((previousChats) => [
-        ...previousChats,
+      setPreviousChats(previousChats => (
+        [...previousChats,
         {
           title: currentTitle,
           role: "user",
-          content: value,
+          content: value
         },
         {
-          title:currentTitle,
+          title: currentTitle,
           role: message.role,
           content: message.content
-        },
-      ]);
+        }
+      ]
+      ));
     }
-  }, [message, currentTitle, value]);
+  }, [message, currentTitle]);
 
-  const currentChat = previousChats.filter(previousChats => previousChats.title === currentTitle)
- const uniqueTitles = Array.from(new Set(previousChats.map(previousChat => previousChat.title))) 
-console.log(uniqueTitles)
- return (
-    <div className="App">
+  const currentChat = previousChats.filter(
+    previousChats => previousChats.title === currentTitle
+  );
+  const uniqueTitles = Array.from(
+    new Set(previousChats.map(previousChat => previousChat.title)));
+  console.log(uniqueTitles);
+  return (
+    <div className="app">
       <section className="side-bar">
-        <button onClick={createNewChat}>+ New Chat</button>
+        <button onClick={createNewChat}> + New Chat</button>
         <ul className="history">
-         {uniqueTitles?.map((uniqueTitles, index) => <li key={index} onClick={()=> handleClick(uniqueTitles)}  >{uniqueTitles}</li>)}
+          {uniqueTitles?.map((uniqueTitle, index) => 
+            <li key={index} onClick={() => handleClick(uniqueTitle)}>
+              {uniqueTitles}
+            </li>
+          )}
         </ul>
         <nav>
           <p>Made by Dilan</p>
         </nav>
       </section>
+
       <section className="main">
         {!currentTitle && <h1> DilanGPT</h1>}
         <ul className="feed">
-          {currentChat.map((chatMessage, index) => <li key={index}>
-            <p className="role">{chatMessage.role}</p>
-            <p>{chatMessage.content}</p>
-          </li> )}
+          {currentChat?.map((chatMessage, index) => 
+            <li key={index}>
+              <p className="role">{chatMessage.role}</p>
+              <p>{chatMessage.content}</p>
+            </li>
+          )}
         </ul>
         <div className="bottom-section">
           <div className="input-container">
